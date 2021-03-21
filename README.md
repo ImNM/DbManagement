@@ -6,3 +6,5 @@ using npm
   body parser
   express
   mongoose
+  postman
+  nodemon
