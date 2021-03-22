@@ -21,14 +21,14 @@ mongoose.connect('uri',{
 
 app.get('/',(req,res)=> res.send('Hello world!  ㅎㅇㅎㅇ'));
 
-
+//check
 
 
 app.post('/register',(req,res)=>{
     //user 객체는 mongoose 모듈 import 해서 만든 객체임 save method 사용가능
     const user = new User(req.body)
     user.save((err,userInfo)=>{
-        if(err) return res.json({success:false,err});
+        if(err) return res.json({success:false,err,testingcode});
         return res.status(200).json({
             success:true
         });
