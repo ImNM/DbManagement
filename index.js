@@ -13,7 +13,8 @@ app.use(bodyParser.json());
 
 //mongoose altlas  db 설정 옵션4개는 뭔지몰라나도 connect는 altlas 주소
 const mongoose = require('mongoose');
-mongoose.connect('mongodb+srv://NMisnm:ckswlscjswo@eatme.43tfu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',{
+const uri = process.env.MONGODB_URI;
+mongoose.connect('uri',{
     useNewUrlParser:true, useUnifiedTopology:true, useCreateIndex:true, useFindAndModify:false
 }).then(()=>console.log('MongoDB conneted...'))
 .catch(err => console.log(err));
@@ -35,4 +36,4 @@ app.post('/register',(req,res)=>{
 })
 
 
-app.listen(port,()=>console.log(`Example app listening on port ${port}!`))
+app.listen(process.env.PORT || 5000,()=>console.log(`Example app listening on port ${port}!`))
