@@ -1,15 +1,39 @@
+// url server adress
+// https://hongikeatme.herocuapp.com
+// 
+// git init
+// git add .
+// git commit -m "message"
+// git push    (DbManagement .git)
+// git push heroku HEAD:master    (server upload)
+// heroku logs --fail   (logs)
+// heroku.cofig.MongosUri 등록필수
+// mongoose atlas 사용 (0.0.0.0/ white )
+// process.env.PORT 사용 heroku port 는 다 다름
+// git 주소 https://github.com/ImNM/DbManagement
+// test 로 postman 사용
+
+
+
+
+
 const express =require('express');
 const app =express();
-const port = 5000;
+
+//const port = 5000;
+const {User}=require("./models/User");  //user schema
 
 const bodyParser = require('body-parser');
-const {User}=require("./models/User");
-
-
 //application/x-www-form-urlencoded data 분석해서 가져올수 있게함. (html form 제출방식) 
 app.use(bodyParser.urlencoded({extended: true}));
 //application/json 타입 분석가능하게 해줌!
 app.use(bodyParser.json());
+
+
+
+
+
+
 
 //mongoose altlas  db 설정 옵션4개는 뭔지몰라나도 connect는 altlas 주소
 const mongoose = require('mongoose');
