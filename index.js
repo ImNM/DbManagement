@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 //mongoose altlas  db 설정 옵션4개는 뭔지몰라나도 connect는 altlas 주소
 const mongoose = require('mongoose');
 const uri = process.env.MONGODB_URI;
-mongoose.connect('uri',{
+mongoose.connect(uri,{
     useNewUrlParser:true, useUnifiedTopology:true, useCreateIndex:true, useFindAndModify:false
 }).then(()=>console.log('MongoDB conneted...'))
 .catch(err => console.log(err));
