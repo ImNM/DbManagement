@@ -13,7 +13,7 @@
 // git 주소 https://github.com/ImNM/DbManagement
 // test 로 postman 사용
 
-require('dotenv').config({ path: 'ENV_FILENAME' });
+const config =require('./config/key');
 
 
 
@@ -37,8 +37,8 @@ app.use(bodyParser.json());
 
 //mongoose altlas  db 설정 옵션4개는 뭔지몰라나도 connect는 altlas 주소
 const mongoose = require('mongoose');
-const uri = process.env.MONGODB_URI;
-mongoose.connect(uri || 'mongodb+srv://NMisnm:ckswlscjswo@eatme.43tfu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+//const uri = process.env.MONGODB_URI;
+mongoose.connect(config.MONGO_URI
     ,{
     useNewUrlParser:true, useUnifiedTopology:true, useCreateIndex:true, useFindAndModify:false
 }).then(()=>console.log('MongoDB conneted...'))
