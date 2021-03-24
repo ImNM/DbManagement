@@ -8,3 +8,6 @@ using npm
   mongoose
   postman
   nodemon
+  dotenv
+  bcrypt
+  jsonwebtoken

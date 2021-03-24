@@ -24,10 +24,12 @@ const app =express();
 const {User}=require("./models/User");  //user schema
 
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 //application/x-www-form-urlencoded data 분석해서 가져올수 있게함. (html form 제출방식) 
 app.use(bodyParser.urlencoded({extended: true}));
 //application/json 타입 분석가능하게 해줌!
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 
 
@@ -58,6 +60,32 @@ app.post('/register',(req,res)=>{
             success:true
         });
     })
+})
+
+app.post('/login',(req,res)=>{
+    User.findOne({email: req.body.email},(err,userInfo=>{
+        if(!userInfo){
+            return res.json({
+                loginSucces : false,
+                message:" 이메일 db에 없움!"
+            })
+        }
+        user.comparePassword(req.body.password,(err, isMatch)=>{
+            if(!isMatch)
+            return res.json({loginSucces : false, message: "비밀번호 안맞음."});
+            else{
+
+                user.generateToken((err,user)=>{
+                    if(err) return res.status(400).send(err);
+                    res.cookie("x_auth", user.token)
+                    .status(200)
+                    .json({loginSucces:true, userId: user._Id});
+                })
+            }
+        })
+
+    })
+    )
 })
 
 
