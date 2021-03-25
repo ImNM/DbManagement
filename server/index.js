@@ -22,6 +22,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const {auth} =require('./middleware/auth');
+const path = require('path');
 
 
 
@@ -117,4 +118,8 @@ app.get('/api/hello',(req,res)=>{
 
 
 app.listen(process.env.PORT || 5000,()=>console.log(`Example app listening on port 5000!`))
+app.use(express.static(path.join(__dirname,'../client/build')));
+app.get('*',(req,res)=>{
+    res.sendFile(path.join(__dirname+'/client/build/index.html'));
+})
 //process.env.PORT || 
