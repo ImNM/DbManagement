@@ -48,7 +48,7 @@ mongoose.connect(config.MONGO_URI
 }).then(()=>console.log('MongoDB conneted...'))
 .catch(err => console.log(err));
 
-app.get('/',(req,res)=> res.send('Hello world!  ㅎㅇㅎㅇ'));
+app.get('/api',(req,res)=> res.send('Hello world!  ㅎㅇㅎㅇ'));
 
 //check
 
@@ -116,10 +116,16 @@ app.get('/api/hello',(req,res)=>{
     res.send("테스트ㅎㅇㅎㅇgdgdㅎㅇㅎㅇ");
 ;})
 
+if(process.env.NODE_ENV ==='production'){
+    app.use(express.static(path.join(__dirname,'../client/build')));
+}
 
-app.listen(process.env.PORT || 5000,()=>console.log(`Example app listening on port 5000!`))
-app.use(express.static(path.join(__dirname,'../client/build')));
-app.get('*',(req,res)=>{
+app.get('/',(req,res)=>{
     res.sendFile(path.join(__dirname+'/client/build/index.html'));
 })
+
+
+app.listen(process.env.PORT || 5000,()=>console.log(`Example app listening on port 5000!`))
+
+
 //process.env.PORT || 

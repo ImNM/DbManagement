@@ -11,6 +11,7 @@ import {createStore,applyMiddleware} from 'redux';
 import promiseMiddleware from 'redux-promise';
 import ReduxThunk from 'redux-thunk';
 import Reducer from './_reducers';
+
 //--middlware 을 통해서 store 에 function 과 promise 를 등록할 수  있게 하기 위함. + redux devtools 사용
 const createStoreWithMiddleware = applyMiddleware(promiseMiddleware, ReduxThunk)(createStore);
 //
