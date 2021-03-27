@@ -23,7 +23,7 @@ const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const {auth} =require('./middleware/auth');
 const path = require('path');
-
+const cors = require('cors');
 const session = require('express-session');
 const passport = require('passport');
 
@@ -35,9 +35,10 @@ const passport = require('passport');
 app.use(bodyParser.urlencoded({extended: true}));
 //application/json 타입 분석가능하게 해줌!
 app.use(bodyParser.json());
+app.use(cors());
 app.use(cookieParser());
 app.use(session({
-    secret: " asdfsadfsadf",
+    secret: "asdfsadfsadf",
     resave: false,
     saveUninitialized : true
 }));
@@ -46,6 +47,20 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
+
+passport.serializeUser(function(user, done) {
+    done(null, user);
+  });
+  
+  passport.deserializeUser(function(user, done) {
+    done(null, user);
+  });
+
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
 
 
 
@@ -130,8 +145,22 @@ const kakaoKey = {
 passport.use(
   "kakao-login",
   new KakaoStrategy(kakaoKey, (accessToken, refreshToken, profile, done) => {
-    console.log(profile);
-  })
+    console.log("loging");
+    
+        User.findOne({snsId: profile.id,provider:'kakao'},(err,user)=>{
+         if(!user){
+            console.log("!user");
+            adduser = new User({name:profile.displayName, snsId:profile.id, provider:profile.provider});
+            adduser.save();
+            done(null,adduser);
+         }
+         else{
+            console.log("useris on");
+            done(null,user);
+         }
+        })
+    
+   })
 );
 
 
@@ -144,7 +173,13 @@ app.get(
     })
   );
   
-
+app.get('/api/users/oauth/kakao/logout', function(req,res){
+    req.logout();
+    req.session.save(function(){
+      res.redirect('/');
+    })
+    console.log("logout");
+});
 
 
 

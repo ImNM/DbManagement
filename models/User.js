@@ -23,6 +23,12 @@ const userSchema = mongoose.Schema({
     },
     isAuth:{
         type:String
+    },
+    snsId:{
+        type:String
+    },
+    provider:{
+        type:String
     }
 })
 
