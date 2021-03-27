@@ -24,6 +24,10 @@ const mongoose = require('mongoose');
 const {auth} =require('./middleware/auth');
 const path = require('path');
 
+const session = require('express-session');
+const passport = require('passport');
+
+
 
 
 
@@ -32,8 +36,14 @@ app.use(bodyParser.urlencoded({extended: true}));
 //application/json 타입 분석가능하게 해줌!
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(session({
+    secret: " asdfsadfsadf",
+    resave: false,
+    saveUninitialized : true
+}));
 
-
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 
@@ -64,6 +74,10 @@ app.post('/api/users/register',(req,res)=>{
     })
 })
 
+
+
+
+
 app.post('/api/users/login',(req,res)=>{
     User.findOne({email: req.body.email},(err,user)=>{
         if(!user){
@@ -75,7 +89,7 @@ app.post('/api/users/login',(req,res)=>{
         user.comparePassword(req.body.password,(err, isMatch)=>{
             if(!isMatch)
             return res.json({loginSucces : false, message: "비밀번호 안맞음."});
-            else{
+            else{//success 시 ,,
 
                 user.generateToken((err,user)=>{
                     if(err) return res.status(400).send(err);
@@ -89,6 +103,9 @@ app.post('/api/users/login',(req,res)=>{
     })
     
 })
+
+
+
 //auth middleware 콜백 드가기 전에 미들웨어
 app.get('/api/users/auth',auth,(req,res)=>{
     //isAdimin: req.user.role === 0 ? false : true,
@@ -98,6 +115,38 @@ app.get('/api/users/auth',auth,(req,res)=>{
         isAuth: true,
     })
 })
+
+
+
+const KakaoStrategy = require("passport-kakao").Strategy;
+
+const kakaoKey = {
+  clientID: "f30e271d94a23d1ff9a9938a46c4e679",
+  clientSecret: "r6c1QtmxL5cNXBUSrO03cix365nyL1rR",
+  callbackURL: "http://localhost:5000/api/users/oauth/kakao/callback"
+};
+
+
+passport.use(
+  "kakao-login",
+  new KakaoStrategy(kakaoKey, (accessToken, refreshToken, profile, done) => {
+    console.log(profile);
+  })
+);
+
+
+app.get('/api/users/oauth/kakao',passport.authenticate("kakao-login"));
+app.get(
+    "/api/users/oauth/kakao/callback",
+    passport.authenticate("kakao-login", {
+      successRedirect: "/",
+      failureRedirect: "/api/users/oauth/kakao/fail"
+    })
+  );
+  
+
+
+
 
 app.get('/api/users/logout',auth,(req,res)=>{
     User.findOneAndUpdate({_id:req.user._id}
@@ -115,6 +164,9 @@ app.get('/api/users/logout',auth,(req,res)=>{
 app.get('/api/hello',(req,res)=>{
     res.send("테스트ㅎㅇㅎㅇgdgdㅎㅇㅎㅇ");
 ;})
+
+
+
 
 app.use(express.static(path.join(__dirname,'/client/build')));
 

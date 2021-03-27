@@ -9,7 +9,7 @@ function LandingPage(props) {
         .then(response => {console.log(response.data)})
     }, []);
 
-    const onClickHandler = () =>{
+    const onClicklogoutHandler = () =>{
         axios.get('/api/users/logout')
         .then(res => {
             if(res.data.success){
@@ -20,6 +20,18 @@ function LandingPage(props) {
             }
         })
     }
+    const onClickloginHandler = () =>{
+        props.history.push("/login"); 
+    }
+    const onClickregisterHandler = () =>{
+        props.history.push("/register"); 
+    }
+    const onClickkakaologinHandler = () =>{
+        axios.get('/api/users/oauth/kakao')
+        .then(res =>{
+            console.log(res);
+        })
+    }   
 
     return (
         <div style={{
@@ -27,8 +39,17 @@ function LandingPage(props) {
             ,width:'100%',height:'100vh'
         }}>
             <h2> 시작 페이지 </h2>
-            <button onClick={onClickHandler}>
+            <button onClick={onClicklogoutHandler}>
                 logout
+            </button>
+            <button onClick={onClickloginHandler}>
+                login
+            </button>
+            <button onClick={onClickregisterHandler}>
+                register
+            </button>
+            <button onClick={onClickkakaologinHandler}>
+                kakaologin
             </button>
         </div>
     )
