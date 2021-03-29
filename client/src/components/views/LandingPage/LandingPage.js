@@ -2,6 +2,7 @@ import React,{useEffect} from 'react'
 import axios from 'axios'
 import {withRouter} from'react-router-dom';
 import { useSelector } from 'react-redux';
+import styled from 'styled-components';
 
 
 
@@ -9,6 +10,9 @@ import { Layout, Menu, Breadcrumb } from 'antd';
 const { Header, Content, Footer } = Layout;
 
 
+const CenterAlign = styled.div`
+    justify-content: center;
+`;
 
 //router dom써야 props 사용가능?
 function LandingPage(props) {
@@ -60,13 +64,16 @@ function LandingPage(props) {
     return (
         <Layout>
     <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
-    <a style = {{display:'flex'}}>매일이</a>
+    <a style = {{display:'flex',float:'left'}}>똑똑한, 투약 도우미 매일이</a>
     <div style={{ display:'flex', float:'right' }}>
 
       <div>
       {isAuth
       
-        ? <div>
+        ? <div style={{
+            display:'flex'}}>
+             <a > {userInfo.name}님! 안녕하세요</a>
+
             <Menu theme="dark" mode="horizontal">
             <Menu.Item key="1" onClick = {onClicklogoutHandler}>로그아웃</Menu.Item>
             </Menu>
@@ -89,12 +96,16 @@ function LandingPage(props) {
     </Header>
 
     <Content className="site-layout" style={{ padding: '0 0px', marginTop: 64 }}>
-      <div className="site-layout-background" style={{ padding: 24, minHeight: 380 }}>
-      <img src={process.env.PUBLIC_URL+'/images/매일이.jpeg' } />
+      <div className="site-layout-background" style={{ padding: 0, minHeight: 380 }}>
+
+          <CenterAlign>
+          <img  src={process.env.PUBLIC_URL+'/images/매일이2.jpeg' } />
+          </CenterAlign>
+      
       </div>
     </Content>
 
-    <Footer style={{ textAlign: 'center' }}>매일이 ©2021 Created by 아리아리</Footer>
+    <Footer style={{  textAlign: 'center' }}>매일이 ©2021 Created by 아리아리</Footer>
   </Layout>
   //mountNode,
   /*
