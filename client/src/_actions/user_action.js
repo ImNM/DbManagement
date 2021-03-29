@@ -4,8 +4,10 @@ export  function  loginUser(dataToSubmit){
 
 
     const request = axios.post('/api/users/login', dataToSubmit)
-        .then(response => response.data);
+        .then(response => response.data)
     //console.log(request);
+
+    
     
     return {
         type:"LOGIN_USER",
@@ -29,9 +31,10 @@ export  function  registerUser(dataToSubmit){
 
 
 export  function  auth(){
-
+    const localUserInfo = JSON.parse(localStorage.getItem("Auth"));
+    
     //get method 니깐 body 부분 필요없겟져?>
-    const request = axios.get('/api/users/auth', )
+    const request = axios.post('/api/users/auth',{localUserInfo})
         .then(response => response.data);
     //console.log(request);
     

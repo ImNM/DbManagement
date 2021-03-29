@@ -29,7 +29,14 @@ const userSchema = mongoose.Schema({
     },
     provider:{
         type:String
+    },
+    accessToken:{
+        type:String
+    },
+    refreshToken:{
+        type:String
     }
+
 })
 
 userSchema.pre('save',function(next){
