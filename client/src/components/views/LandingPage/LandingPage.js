@@ -1,16 +1,29 @@
 import React,{useEffect} from 'react'
 import axios from 'axios'
 import {withRouter} from'react-router-dom';
+import { useSelector } from 'react-redux';
+
+
+
 import { Layout, Menu, Breadcrumb } from 'antd';
 const { Header, Content, Footer } = Layout;
 
 
+
 //router dom써야 props 사용가능?
 function LandingPage(props) {
-
+    const userInfo= useSelector(state=> state.user.isAuth);
+    console.log(userInfo);
+    var isAuth ;
+    if(!userInfo){
+        isAuth =false;
+    }else{
+        isAuth = userInfo.isAuth;
+    }
+   
+   // console.log(isAuth);
     useEffect(() => {
-        axios.get('/api/hello')
-        .then(response => {console.log(response.data)})
+       
     }, []);
 
     const onClicklogoutHandler = () =>{
@@ -18,14 +31,14 @@ function LandingPage(props) {
         axios.post('/api/users/logout',{localUserInfo})
         .then(res => {
             if(res.data.success){
-                props.history.push("/login");
+                window.location.reload(false);
             }
             else{
                 alert('로그아웃 실패다.');
             }
         })
         localStorage.removeItem("Auth");
-
+        isAuth=false;
 
     }
     const onClickloginHandler = () =>{
@@ -43,16 +56,35 @@ function LandingPage(props) {
     const onclickevent= () =>{
         console.log("hihi");
     }
-
+    console.log("isaut?",isAuth);
     return (
         <Layout>
     <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
+    <a style = {{display:'flex'}}>매일이</a>
     <div style={{ display:'flex', float:'right' }}>
-      <Menu theme="dark" mode="horizontal">
-        <Menu.Item key="1" onClick = {onclickevent}>로그인</Menu.Item>
-        <Menu.Item key="2">회원가입</Menu.Item>
-        <Menu.Item key="3">about us</Menu.Item>
-      </Menu>
+
+      <div>
+      {isAuth
+      
+        ? <div>
+            <Menu theme="dark" mode="horizontal">
+            <Menu.Item key="1" onClick = {onClicklogoutHandler}>로그아웃</Menu.Item>
+            </Menu>
+         </div>
+       
+        :   <div>
+        <Menu theme="dark" mode="horizontal">
+        <Menu.Item key="1" onClick = {onClickloginHandler}>로그인</Menu.Item>
+        <Menu.Item key="2" onClick = {onClickregisterHandler}>회원가입</Menu.Item>
+         <Menu.Item key="3">about us</Menu.Item>
+         </Menu>
+         </div>
+            
+             
+        }
+       </div>
+    
+      
       </div>
     </Header>
 

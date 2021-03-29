@@ -19,7 +19,7 @@ function App() {
     <Router>
       <div>
        
-        <hr />
+      
         <Switch>
           <Route exact path="/" component = {Auth(LandingPage,null)}/>
           <Route exact path="/login" component = {Auth(LoginPage,false)}/>
