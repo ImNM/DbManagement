@@ -1,6 +1,9 @@
 import React,{useEffect} from 'react'
 import axios from 'axios'
 import {withRouter} from'react-router-dom';
+import { Layout, Menu, Breadcrumb } from 'antd';
+const { Header, Content, Footer } = Layout;
+
 
 //router dom써야 props 사용가능?
 function LandingPage(props) {
@@ -37,8 +40,32 @@ function LandingPage(props) {
             console.log(res);
         })
     }  
-   
+    const onclickevent= () =>{
+        console.log("hihi");
+    }
+
     return (
+        <Layout>
+    <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
+    <div style={{ display:'flex', float:'right' }}>
+      <Menu theme="dark" mode="horizontal">
+        <Menu.Item key="1" onClick = {onclickevent}>로그인</Menu.Item>
+        <Menu.Item key="2">회원가입</Menu.Item>
+        <Menu.Item key="3">about us</Menu.Item>
+      </Menu>
+      </div>
+    </Header>
+
+    <Content className="site-layout" style={{ padding: '0 0px', marginTop: 64 }}>
+      <div className="site-layout-background" style={{ padding: 24, minHeight: 380 }}>
+      <img src={process.env.PUBLIC_URL+'/images/매일이.jpeg' } />
+      </div>
+    </Content>
+
+    <Footer style={{ textAlign: 'center' }}>매일이 ©2021 Created by 아리아리</Footer>
+  </Layout>
+  //mountNode,
+  /*
         <div style={{
             display:'flex', justifyContent:'center',alignItems:'center'
             ,width:'100%',height:'100vh'
@@ -57,7 +84,7 @@ function LandingPage(props) {
             <button onClick={onClickregisterHandler}>
                 register
             </button>
-        </div>
+        </div>*/
     )
 }
 
