@@ -3,6 +3,7 @@ import react,{useEffect} from 'react';
 import {auth} from '../_actions/user_action';
 import {useDispatch} from 'react-redux';
 
+
 export default function(SpecificComponent,option,adminRoute = null){
 
     //null 아무나 출입
