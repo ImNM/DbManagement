@@ -115,6 +115,8 @@ app.get('/api',(req,res)=> res.send('Hello world!  ㅎㅇㅎㅇ'));
 var smtpTransport = nodemailer.createTransport(smtpTransporter({
     service: 'Gmail',
     host:'smtp.gmail.com',
+    port: 465,
+    secure: true,
     auth: {
         user: 'water0641@gmail.com',
         pass: config.GmailpassWord
@@ -178,7 +180,7 @@ app.get('/api/users/confirmEmail',function (req,res) {
             console.log(err);
         }
         //일치하는 key가 없으면
-        else if(user.n==0){
+        else if(!user){
             return res.send('<script type="text/javascript">alert("이메일 인증에 성공하지 못했습니다."); window.location="/"; </script>');
         }
         //인증 성공
