@@ -359,7 +359,7 @@ app.post('/api/users/oauth/kakao/login',function(req,response){
                     */
                     adduser.generateToken((err,user)=>{//user 정보에 token 까지 저장해줌.
                         console.log(err)
-                        if(err) return response.status(400).send(err);
+                        if(err) return response.status(200).send(err);
                        return response
                         .status(200)
                         .json({loginSucces:true, 
