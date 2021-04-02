@@ -8,9 +8,6 @@ import { Form, Input, Button, Checkbox } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import  '../../../loginpage.css';
 
-
-//const { Option } = Select;
-
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -144,11 +141,3 @@ function LoginPage(props) {
 }
 
 export default withRouter(LoginPage);
-
-
-
-
-//--------------------------------------------------------------------------------
-// 추가할것 formik & yup  make your system dynamic
-// 2021-03-24 20시
-//--------------------------------------------------------------------------------
