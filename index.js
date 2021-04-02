@@ -337,6 +337,7 @@ app.post('/api/users/oauth/kakao/login',function(req,response){
             const info = json.kakao_account;
             //console.log(info);
             User.findOne({snsId: json.id,provider:'kakao'},(err,user)=>{
+
                 if(!user){//유저가 없으면 가입!
                     console.log("!user");
                     adduser = new User({
@@ -357,8 +358,9 @@ app.post('/api/users/oauth/kakao/login',function(req,response){
                     adduser.save();
                     */
                     adduser.generateToken((err,user)=>{//user 정보에 token 까지 저장해줌.
+                        console.log(err)
                         if(err) return response.status(400).send(err);
-                        response
+                       return response
                         .status(200)
                         .json({loginSucces:true, 
                             userId: user._id ,
@@ -379,7 +381,7 @@ app.post('/api/users/oauth/kakao/login',function(req,response){
                         user.save();*/
                         user.generateToken((err,user)=>{//user 정보에 token 까지 저장해줌.
                             if(err) return response.status(400).send(err);
-                            response
+                           return response
                             .status(200)
                             .json({loginSucces:true, 
                                 userId: user._id ,

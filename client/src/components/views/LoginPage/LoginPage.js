@@ -47,7 +47,7 @@ function LoginPage(props) {
         console.log(data.response.access_token);
         axios.post('/api/users/oauth/kakao/login',{accessToken : data.response.access_token})
         .then(response => {//오류코드 추가해야햄
-            console.log();
+            console.log(response);
             localStorage.setItem(
                 "Auth",
                 JSON.stringify({ token : response.data.token , name : response.data.name })
