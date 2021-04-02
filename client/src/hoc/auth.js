@@ -16,8 +16,9 @@ export default function(SpecificComponent,option,adminRoute = null){
         useEffect(() => {
 
 
-            dispatch(auth()).then(res =>{
-                if(!res.payload.isAuth){//로그인 하지 않은 상태
+            dispatch(auth()).then(async res =>{
+                console.log("auth",res.payload.isAuth)
+                if(await !res.payload.isAuth){//로그인 하지 않은 상태
                     if(option){
                         props.history.push('/login');
                         alert("로그인 해");

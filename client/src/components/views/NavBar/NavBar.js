@@ -39,8 +39,13 @@ function NavBar(props) {
     const onClickregisterHandler = () =>{
         props.history.push("/register"); 
     } 
+    const onClickboardHandler = () =>{
+        props.history.push("/board"); 
+    } 
     const onClickHomeHandler = () =>{
+        
         props.history.push("/"); 
+        window.location.reload(false);
     } 
     return (
         <Layout>
@@ -51,10 +56,13 @@ function NavBar(props) {
                 <div>
                     {isAuth ? 
                     <div style={{display:'flex'}}>
-                     <a > {userInfo.name}님! 안녕하세요</a>
+                     
                    <Menu theme="dark" mode="horizontal">
-                      <Menu.Item key="1" onClick = {onClicklogoutHandler}>로그아웃</Menu.Item>
+                          <Menu.Item key="1" onClick = {onClickboardHandler}>의학정보 게시판</Menu.Item>
+                          <Menu.Item key="2" onClick = {onClicklogoutHandler}>로그아웃</Menu.Item>
+                      
                   </Menu>
+                  <a > {userInfo.name}님! 안녕하세요</a>
                 </div>
                      : <div>
                      <Menu theme="dark" mode="horizontal">
