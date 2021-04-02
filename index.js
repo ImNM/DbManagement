@@ -334,6 +334,7 @@ app.post('/api/users/oauth/kakao/login',function(req,response){
         .then(json => {
             clientid = json.id;
             const info = json.kakao_account;
+            console.log(info);
             User.findOne({snsId: json.id,provider:'kakao'},(err,user)=>{
                 if(!user){//유저가 없으면 가입!
                     console.log("!user");
