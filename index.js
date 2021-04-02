@@ -136,7 +136,7 @@ app.post('/api/users/register',(req,res)=>{
         name : req.body.name,
         key_for_verify :key_for_verify
     })
-    user.save((err,userInfo)=>{
+    user.save((err,userInfo)=>{  //나중에 순서 바꾸셈 이메일 먼저 그다음  save다
         if(err) return res.json({success:false,err});
 
         
