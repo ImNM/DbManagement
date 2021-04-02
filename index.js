@@ -28,6 +28,9 @@ const session = require('express-session');
 const fetch = require('node-fetch');
 const jwt = require('jsonwebtoken');
 
+var nodemailer = require('nodemailer');
+var smtpTransporter=require('nodemailer-smtp-transport');
+const crypto = require('crypto');
 
 const passport = require('passport');
 const LocalStarge = require('passport-local').Strategy;
@@ -109,17 +112,84 @@ app.get('/api',(req,res)=> res.send('Hello world!  ㅎㅇㅎㅇ'));
 
 //check
 
+var smtpTransport = nodemailer.createTransport(smtpTransporter({
+    service: 'Gmail',
+    host:'smtp.gmail.com',
+    auth: {
+        user: 'water0641@gmail.com',
+        pass: config.GmailpassWord
+    }
+}));
+
 
 app.post('/api/users/register',(req,res)=>{
     //user 객체는 mongoose 모듈 import 해서 만든 객체임 save method 사용가능
-    const user = new User(req.body)
+    var key_one=crypto.randomBytes(256).toString('hex').substr(100, 5);
+    var key_two=crypto.randomBytes(256).toString('base64').substr(50, 5);
+    var key_for_verify=key_one+key_two;
+
+    //console.log(config.GmailpassWord)
+    //console.log(req.body);
+    const user = new User({
+        email : req.body.email,
+        password: req.body.password,
+        name : req.body.name,
+        key_for_verify :key_for_verify
+    })
     user.save((err,userInfo)=>{
         if(err) return res.json({success:false,err});
+
+        
+            console.log(userInfo);
+            //url
+            var url = 'http://' + req.get('host')+'/api/users/confirmEmail'+'?key='+userInfo.key_for_verify;
+            //옵션
+            console.log("url" , url)
+
+            var mailOpt = {
+                from: 'water0641@gmail.com',
+                to: user.email,
+                subject: '이메일 인증을 진행해주세요.',
+                html : `<h1 href= "${url}">이메일 인증을 위해 URL을 클릭해주세요.</h1><br>`+url
+            };
+            //전송
+            smtpTransport.sendMail(mailOpt, function(err, res) {
+                if (err) {
+                    console.log(err);
+                } else {
+                     console.log('email has been sent.');
+                }
+                smtpTransport.close();
+            });
+            
         return res.status(200).json({
             success:true
         });
     })
 })
+
+app.get('/api/users/confirmEmail',function (req,res) {
+   console.log("gdgd",req.query.key);
+
+    User.findOne({key_for_verify:req.query.key},
+        function(err,user){
+        //에러처리
+        if (err) {
+            console.log(err);
+        }
+        //일치하는 key가 없으면
+        else if(user.n==0){
+            return res.send('<script type="text/javascript">alert("이메일 인증에 성공하지 못했습니다."); window.location="/"; </script>');
+        }
+        //인증 성공
+        else {
+            user.updateOne({email_verified : true}).then(()=>{
+                return  res.send('<script type="text/javascript">alert("이메일 인증 완료!"); window.location="/"; </script>');
+            })
+          
+        }
+    });
+});
 
 
 
@@ -137,6 +207,8 @@ app.post('/api/users/login',(req,res)=>{
             if(!isMatch)
             return res.json({loginSucces : false, message: "비밀번호 안맞음."});
             else{//success 시 ,,
+                if(!user.email_verified)
+                return res.json({loginSucces : false, message: "이메일 인증 안됨"});
 
                 user.generateToken((err,user)=>{
                     if(err) return res.status(400).send(err);

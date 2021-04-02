@@ -38,7 +38,7 @@ function LoginPage(props) {
             if(res.payload.loginSucces){
                 props.history.push('/');
             }else{
-                alert('로그인 정보가 올바르지 않습니다');
+                alert(res.payload.message);
             }
         })
     }
