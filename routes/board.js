@@ -36,10 +36,20 @@ router.get('/pagination',function (req,res) {
  router.get('/page',function (req,res) {
 
      Board.find({},function(err,boardList){
-       // console.log("boardList : ",boardList);
-   
-     return res.status(200).json({boardList:boardList});
-     })
+        var avatarList = [];
+        Board.find().populate("writerId").exec((err,board)=>{
+            if(err) return status(400).send(err);
+            for(i = 0 ; i<board.length; i++){
+                avatarList.push(board[i].writerId.avatar)
+            }
+            return res.status(200).json({boardList:boardList,avatarList:avatarList});
+         })
+     
+})
+       
+     
+
+    
    
    
  });
@@ -50,9 +60,13 @@ router.get('/pagination',function (req,res) {
     const pageId = req.query.key;
 
      Board.find({_id : pageId},function(err,boardList){
+         boardList[0].populate("writerId").execPopulate((err,user)=>{  //미확인된 코드 수정할수 도 있음
+             if(err) return res.status(400).send(err)
+             return res.status(200).json({boardList:boardList , avatar:user.avatar});
+        })
        // console.log("boardList : ",boardList);
    
-     return res.status(200).json({boardList:boardList});
+     
      })
   
 });

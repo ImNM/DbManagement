@@ -135,6 +135,7 @@ router.post('/auth',auth,(req,res)=>{
         _id: req.user._id,
         name : req.user.name,
         isAuth: true,
+        avatar: req.user.avatar
     })
     
 })
@@ -182,10 +183,9 @@ router.post('/oauth/kakao/login',function(req,response){
         headers: { 'Authorization': 'Bearer '+accessToken}
         }).then(res => res.json())
         .then(json => {
-            console.log(json)
             clientid = json.id;
             const info = json.kakao_account;
-            //console.log(info);
+            console.log(info);
             User.findOne({snsId: json.id,provider:'kakao'},(err,user)=>{
 
                 if(!user){//유저가 없으면 가입!
@@ -195,7 +195,8 @@ router.post('/oauth/kakao/login',function(req,response){
                         snsId:json.id, 
                         provider:'kakao' , 
                         accessToken:accessToken,
-                        email:info.email
+                        email:info.email,
+                        avatar:info.profile.thumbnail_image_url
                     });
                   
                     adduser.generateToken((err,user)=>{//user 정보에 token 까지 저장해줌.
@@ -206,7 +207,8 @@ router.post('/oauth/kakao/login',function(req,response){
                         .json({loginSucces:true, 
                             userId: user._id ,
                             token:user.token , 
-                            name:user.name
+                            name:user.name,
+                            avator:user.avatar
                         });  //json 객체 형태로 front단에 넘겨줄거야 쿠키 사용 x
                     })
                  }
@@ -220,7 +222,8 @@ router.post('/oauth/kakao/login',function(req,response){
                             .json({loginSucces:true, 
                                 userId: user._id ,
                                 token:user.token , 
-                                name:user.name
+                                name:user.name,
+                                avator:user.avatar
                             });
                         })
                  }

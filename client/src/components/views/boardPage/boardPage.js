@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Layout} from 'antd';
 import {withRouter} from'react-router-dom';
 import axios from 'axios';
-import { List, Avatar, Space } from 'antd';
+import { List, Avatar, Space,Divider ,Button} from 'antd';
 import { MessageOutlined, LikeOutlined, StarOutlined ,EyeOutlined } from '@ant-design/icons';
 import ReactHtmlParser from 'react-html-parser';
 
@@ -25,19 +25,19 @@ function BoardPage(props) {
     useEffect(() => {
         axios.get('/api/board/page').then(res=>{
             //setPageCount(res.data);
-            console.log("document : ", res.data.boardList)
+            console.log("document : ", res.data)
 
             const boardList = res.data.boardList;
             //listData = boardList;
             
-            for (let i = 0; i < boardList.length ; i++) {
+            for (let i = boardList.length -1; i >=0  ; i--) {
                 var contentString = ReactHtmlParser(boardList[i].content)
                 console.log()
                 listData.push({
                 key : `${i}`,
                 href: '/boardInfo?key='+boardList[i]._id,
                 title: `${boardList[i].title}`,
-                //avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+                avatar: `${res.data.avatarList[i]}`,
                 description:
                 `${boardList[i].writerName}`,
                 content:
@@ -67,7 +67,8 @@ function BoardPage(props) {
     return (
         <Content className="site-layout" style={{ padding: '30 30px', marginTop: 64 }}>
             <div style={{ padding: '20%',paddingTop: '5%',paddingBottom: '10%', marginTop: 64 }}>
-
+            <Button onClick = {onClickboardUpload}>글 작성하기 </Button>
+            <Divider>의학 정보 게시판</Divider>
             <List 
         itemLayout="vertical"
         size="large"
@@ -102,7 +103,7 @@ function BoardPage(props) {
   />
             </div>
   
-         <button onClick = {onClickboardUpload}>글올리기 </button>
+        
         </Content>
     )
 }

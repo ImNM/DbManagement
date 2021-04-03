@@ -43,6 +43,10 @@ const userSchema = mongoose.Schema({
     key_for_verify :{ 
         type: String, 
     },
+    avatar:{
+        type:String,
+        default : ""
+    },
 
 })
 

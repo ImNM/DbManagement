@@ -25,7 +25,7 @@ function LoginPage(props) {
        // event.preventDefault();
         let body = {
             email: values.email,
-            password: values.password
+            password: values.password,
         }
 
         dispatch(loginUser(body))
@@ -50,7 +50,7 @@ function LoginPage(props) {
             }
             localStorage.setItem(
                 "Auth",
-                JSON.stringify({ token : response.data.token , name : response.data.name })
+                JSON.stringify({ token : response.data.token , name : response.data.name ,avatar: response.data.avatar})
               );
               props.history.push('/');
         });

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import CKEditor from 'ckeditor4-react'
-import { Layout} from 'antd';
+import { Layout,Input} from 'antd';
 import axios from 'axios';
 import {withRouter} from'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -11,18 +11,24 @@ function BoardUpload(props) {
     
 
      const [content , setContent] = useState("");
-
+     const [title , settitle] = useState("");
      const onChangeEditHandler = (e) =>{
         setContent(
            e.editor.getData()
         )
-        console.log(content)
+       // console.log(content)
+    } 
+    const onChangeTitleHandler = (e) =>{
+        settitle(e.target.value);
     } 
 
     const OnClickSubmitBoard = () =>{
+        if(title == '' || content == ''){
+            return alert("제목과 내용을 입력해 주세요.")
+        }
         const body = {
             writerId : userInfo._id,
-            title : "제목임ㅋㅋ",
+            title : title,
             content : content,
             writerName : userInfo.name
         }
@@ -37,7 +43,11 @@ function BoardUpload(props) {
     return (
         <div>
         <Layout>
-        <Content className="site-layout" style={{ padding: '0 0px', marginTop: 64 }}>
+        <Content className="site-layout" style={{ padding: '60px', marginTop: 64 }}>
+        <Input 
+            placeholder="제목을 입력해 주세요"
+            onChange = {onChangeTitleHandler} 
+        />
         <CKEditor
             data = {content}
             onChange = {onChangeEditHandler}
