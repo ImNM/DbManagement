@@ -25,10 +25,12 @@ router.post("/upload",(req,res) =>{
 })
 
 
+
+
 router.get('/pagination',function (req,res) {
     var boardLength = 0; 
      Board.find({},function(err,boardList){
-       // console.log("boardLength : ",boardList.length);
+       
      boardLength = boardList.length;
      return res.status(200).json({boardLength:boardLength});
      })
