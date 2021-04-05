@@ -17,7 +17,7 @@ import NavBar from './components/views/NavBar/NavBar'
 import boardPage from './components/views/boardPage/boardPage'
 import boardUpload from './components/views/boardPage/boardUpload'
 import boardInfoPage from './components/views/boardPage/boardInfoPage'
-
+import userInfo from './components/views/UserInfoPage/UserInfoPage'
 import Auth from './hoc/auth';
 
 function App() {
@@ -33,6 +33,7 @@ function App() {
           <Route exact path="/board" component = {Auth(boardPage,true)}/>
           <Route exact path="/boardUpload" component = {Auth(boardUpload,true)}/>
           <Route exact path="/boardInfo" component = {Auth(boardInfoPage,true)}/>
+          <Route exact path="/userInfo" component = {Auth(userInfo,true)}/>
         </Switch>
       </div>
       <Footer/>

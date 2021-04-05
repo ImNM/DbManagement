@@ -27,6 +27,10 @@ const boardSchema = mongoose.Schema({
     comment : {
         type : Number,
         default : 0
+    },
+    tag : {
+        type : String,
+        default : ""
     }
 
 

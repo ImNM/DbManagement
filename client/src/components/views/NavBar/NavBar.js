@@ -62,7 +62,7 @@ function NavBar(props) {
                           <Menu.Item key="2" onClick = {onClicklogoutHandler}>로그아웃</Menu.Item>
                       
                   </Menu>
-                  <a > {userInfo.name}님! 안녕하세요</a>
+                  <a href='/userInfo'> {userInfo.name}님! 안녕하세요</a>
                 </div>
                      : <div>
                      <Menu theme="dark" mode="horizontal">
