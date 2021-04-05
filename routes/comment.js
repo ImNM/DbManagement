@@ -20,4 +20,18 @@ router.post("/saveComment",(req,res) =>{
 
 })
 
+
+router.post("/getComments",(req,res) =>{
+   // console.log("boardid",req.body.boardId)
+
+    Comment.find({"boardId":req.body.boardId})
+    .populate('writer')
+    .exec((err,comments)=>{
+        //console.log("comment", comments)
+        if(err) return res.status(400).send(err)
+        res.status(200).json({comments})
+    })
+
+})
+
 module.exports = router;

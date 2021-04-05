@@ -62,7 +62,16 @@ router.get('/pagination',function (req,res) {
      Board.find({_id : pageId},function(err,boardList){
          boardList[0].populate("writerId").execPopulate((err,user)=>{  //미확인된 코드 수정할수 도 있음
              if(err) return res.status(400).send(err)
-             return res.status(200).json({boardList:boardList , avatar:user.avatar});
+             //console.log("user:",user)
+             //console.log("boardlist",boardList)
+             Board.findOne({_id : pageId},function(err,boardList2){
+                // console.log("조회수 증가?",boardList2)
+                 boardList2.views = boardList2.views+1;
+                 boardList2.save();
+                // console.log("조회수 증가?",boardList2)
+                return res.status(200).json({boardList:boardList2 , avatar:user.writerId.avatar});
+             })
+             
         })
        // console.log("boardList : ",boardList);
    
