@@ -45,6 +45,7 @@ function BoardInfoPage(props) {
     }, [])
 
     const refreshFunction = (newComment) =>{
+      console.log("refreshFunction",Comments)
         setComments(Comments.concat(newComment))
     }
 

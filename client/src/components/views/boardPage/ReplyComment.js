@@ -6,7 +6,7 @@ import {withRouter} from'react-router-dom';
 function ReplyComment(props) {
     const [ChildCommentNumber, setChildCommentNumber] = useState(0);
     const [OpenReplyComments, setOpenReplyComments] = useState(false);
-
+    console.log("replyprops",props)
     useEffect(() => {
         let commentNumber = 0;
         props.commentLists.map((comment)=>{
@@ -25,8 +25,8 @@ function ReplyComment(props) {
 
             { comment.responseTo === parentCommentId &&
             <div style = {{width:"80%",marginLeft:'40px'}}>
-                       <SingleComment refreshFunction={props.refreshFunction} comment={comment} boardId = {props.boardId} key={comment._id}/>
-                      <ReplyComment  refreshFunction={props.refreshFunction}commentLists={props.commentLists} boardId = {props.boardId} parentCommentId={comment._id} key={comment._id}/>
+                       <SingleComment refreshFunction={props.refreshFunction} comment={comment} boardId = {props.boardId} key={comment._id+index}/>
+                      <ReplyComment  refreshFunction={props.refreshFunction}commentLists={props.commentLists} boardId = {props.boardId} parentCommentId={comment._id} key={comment._id+index*2}/>
             </div>
             }
            

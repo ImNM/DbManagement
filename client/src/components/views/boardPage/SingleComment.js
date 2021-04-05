@@ -6,11 +6,13 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 
 const {TextArea} = Input;
+
 function SingleComment(props) {
     console.log("single",props.comment)
     const user = useSelector(state => state.user.isAuth);
     const [OpenReply, setOpenReply] = useState(false)
     const [CommentValue, setCommentValue] = useState("")
+    
     const onClickReplyOpen = () =>{
         setOpenReply(!OpenReply);
     }
@@ -24,7 +26,7 @@ function SingleComment(props) {
         const variables = {
             content : CommentValue,
             writer: user._id,
-            postId: props.boardId,
+            boardId: props.boardId,
            responseTo: props.comment._id,
         }
 

@@ -48,10 +48,17 @@ function CommentComponent(props) {
         <div style = {{padding : '20px'}}>
 
 
-        {props.commentLists && props.commentLists.map((comment, index)=>(
+        {props.commentLists && props.commentLists.map((comment,index)=>(
+           
             <React.Fragment>
-                 <SingleComment refreshFunction={props.refreshFunction} comment={comment} boardId = {boardId} key={comment._id}/>
-                <ReplyComment refreshFunction={props.refreshFunction} parentCommentId={comment._id} boardId = {boardId} commentLists={props.commentLists} key={comment._id}/>
+                {!comment.responseTo &&
+                <SingleComment refreshFunction={props.refreshFunction} comment={comment} boardId = {boardId} key={comment._id+index}/>
+                }
+                 
+                 
+                  <ReplyComment refreshFunction={props.refreshFunction} parentCommentId={comment._id} boardId = {boardId} commentLists={props.commentLists} key={comment._id+index*2}/>
+                 
+               
 
             </React.Fragment>
            
