@@ -3,7 +3,9 @@ const express = require('express');
 const router = express.Router();
 
 const {Board} = require("../models/board");
-
+const {Like} = require("../models/Like");
+const {Comment} = require("../models/comment");
+const {auth} =require('.././middleware/auth');
 
 router.post("/upload",(req,res) =>{
     console.log("upload:",req.body)
@@ -77,6 +79,55 @@ router.get('/pagination',function (req,res) {
    
      
      })
+  
+});
+
+
+router.post('/delete',auth,function (req,res) {
+
+    const localUserInfo = req.body.localUserInfo;
+    console.log(localUserInfo)
+    const pageId = req.query.key;
+    Board.findById((pageId), (err, board)=>{
+        //console.log(localUserInfo.token)
+        if(localUserInfo.userId == board.writerId){
+            console.log("gdgd",pageId);
+            Comment.find(({boardId:pageId}),(err,comments)=>{
+             
+                comments.map((comment)=>{
+                   console.log(comment)
+                   Comment.deleteMany({_id:comment._id},(err)=>{
+                       console.log(err)
+                   })   
+                })
+            })
+            Like.find(({boardId:pageId}),(err,Likes)=>{
+              
+               Likes.map((like)=>{
+                   Like.deleteMany({_id:like._id},(err)=>{
+                      console.log(err)
+                  })   
+               })
+           })
+           // Like.remove({boardId:pageId})
+          Board.deleteOne({_id:pageId},(err)=>{
+           console.log(err)}
+           )
+            console.log("gdgd",req.query.key);
+            return res.status(200).json({success:true});
+
+
+
+
+        }
+        else{
+            return res.status(400).json({succes:false , message : "인증된 사용자가 삭제요청을 하지 않았습니다."})
+        }
+    })
+   
+ 
+   
+    
   
 });
 

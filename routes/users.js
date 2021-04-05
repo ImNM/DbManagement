@@ -115,7 +115,7 @@ router.post('/login',(req,res)=>{
                     if(err) return res.status(400).send(err);
                     res
                     .status(200)
-                    .json({loginSucces:true, userId: user._id ,token:user.token , name:user.name});  //json 객체 형태로 front단에 넘겨줄거야 쿠키 사용 x
+                    .json({loginSucces:true, userId: user._id ,token:user.token , name:user.name ,  avator:user.avatar});  //json 객체 형태로 front단에 넘겨줄거야 쿠키 사용 x
 
                 })
             }
@@ -200,7 +200,7 @@ router.post('/oauth/kakao/login',function(req,response){
                     });
                   
                     adduser.generateToken((err,user)=>{//user 정보에 token 까지 저장해줌.
-                        console.log(err)
+                        console.log("userinfo",user)
                         if(err) return response.status(200).send(err);
                        return response
                         .status(200)
@@ -216,6 +216,7 @@ router.post('/oauth/kakao/login',function(req,response){
                         user.accessToken = accessToken;
                         
                         user.generateToken((err,user)=>{//user 정보에 token 까지 저장해줌.
+                            console.log("userinfo",user)
                             if(err) return response.status(400).send(err);
                            return response
                             .status(200)
@@ -223,7 +224,7 @@ router.post('/oauth/kakao/login',function(req,response){
                                 userId: user._id ,
                                 token:user.token , 
                                 name:user.name,
-                                avator:user.avatar
+                                avatar:user.avatar
                             });
                         })
                  }

@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 const { Content } = Layout;
 function BoardUpload(props) {
     const userInfo= useSelector(state=> state.user.isAuth);
+   
     
 
      const [content , setContent] = useState("");

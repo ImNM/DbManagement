@@ -4,7 +4,7 @@ export default function (state = {}, action){
             
             localStorage.setItem(
                 "Auth",
-                JSON.stringify({ token : action.payload.token , name : action.payload.name ,avatar: action.payload.avatar})
+                JSON.stringify({ token : action.payload.token , name : action.payload.name ,avatar: action.payload.avatar , userId:action.payload.userId})
               );
             return {...state, loginSuccess : action.payload};  //spread operator
             break;

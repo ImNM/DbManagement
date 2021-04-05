@@ -44,13 +44,13 @@ function LoginPage(props) {
         console.log(data.response.access_token);
         axios.post('/api/users/oauth/kakao/login',{accessToken : data.response.access_token})
         .then(response => {//오류코드 추가해야햄
-            console.log(response.data.code);
+            console.log(response.data);
             if(response.data.code == 11000){
                return alert("로컬로 가입된 유저입니다.!")
             }
             localStorage.setItem(
                 "Auth",
-                JSON.stringify({ token : response.data.token , name : response.data.name ,avatar: response.data.avatar})
+                JSON.stringify({ token : response.data.token , name : response.data.name ,avatar: response.data.avatar , userId : response.data.userId})
               );
               props.history.push('/');
         });

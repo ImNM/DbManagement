@@ -4,24 +4,41 @@ import axios from 'axios';
 import { Layout ,Breadcrumb,Avatar} from 'antd';
 import { Divider } from 'antd';
 import ReactHtmlParser from 'react-html-parser';
-import { UserOutlined } from '@ant-design/icons';
+import { UserOutlined,DeleteOutlined } from '@ant-design/icons';
 import CommentComponent from './Comment'
+import Like from './Like'
+import { useSelector } from 'react-redux';
+
+
 const { Content } = Layout;
 
 function BoardInfoPage(props) {
 
     const boardId = props.location.search.split("=")[1];
-    //console.log(queryId);
+    var userInfo  = JSON.parse(localStorage.getItem("Auth"));
+
+    console.log("idididididid",userInfo.userId);
+   
+    
     const [board,setboard] = useState([]);
     const [avatar,setavatar] = useState("");
     const [boardDate,setboardDate] = useState([])
     const [Comments, setComments] = useState([])
+    const [deleteOk,setdeleteOk] = useState(false);
+    
+  
 
     useEffect(() => {
+      
+    //  
+     
         console.log(boardId)
         axios.get('/api/board/pageInfo?key='+boardId).then(res=>{
             console.log(res.data)
             setboard (res.data.boardList)
+            if(res.data.boardList.writerId == userInfo.userId){
+              setdeleteOk(true);
+            }
             const date = new Date(res.data.boardList.createdAt);
             setavatar(res.data.avatar)
           return date;
@@ -42,11 +59,34 @@ function BoardInfoPage(props) {
                     }
          })
         })
+
+       
     }, [])
 
     const refreshFunction = (newComment) =>{
       console.log("refreshFunction",Comments)
         setComments(Comments.concat(newComment))
+    }
+
+    const onHandlerDeleteBoard = ()=>{
+      const localUserInfo = JSON.parse(localStorage.getItem("Auth"));
+
+      if(window.confirm("게시글을 지우시겠습니까?")){
+        axios.post('/api/board/delete?key='+boardId,{localUserInfo}).then(res =>{
+          if(res.data.success){
+            console.log("success to delet board")
+            props.history.push("/board"); 
+  
+  
+          }
+          else{
+            alert("게시글 지우기를 실패했습니다.")
+          }
+        })
+      }
+      
+
+
     }
 
 
@@ -66,7 +106,16 @@ function BoardInfoPage(props) {
               : <Avatar src={avatar} /> }
 
              <h1 style ={{marginBottom : "0" , marginLeft : "1%" }}>{board.writerName}</h1>
-             <a style={{cursor:"default" , marginLeft : "auto"}}> {boardDate[0]}.{boardDate[2]}.{boardDate[1]} </a> 
+             <div style = {{  display : "flex",flexDirection:"row",marginLeft : "auto"}}>
+             <Like   userId={userInfo.userId} boardId={boardId} />
+             <a style={{cursor:"default"  , marginRight : "8px"}}> {boardDate[0]}.{boardDate[2]}.{boardDate[1]} </a> 
+             {deleteOk &&
+               <DeleteOutlined style = {{fontSize : "20px"}} onClick ={onHandlerDeleteBoard}/>
+             }
+
+           
+             </div>
+            
              
              </div>
              <div>

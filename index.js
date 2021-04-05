@@ -26,6 +26,7 @@ mongoose.connect(config.MONGO_URI
 app.use('/api/users',require('./routes/users'));
 app.use('/api/comment',require('./routes/comment'));
 app.use('/api/board',require('./routes/board'));
+app.use('/api/like',require('./routes/like'));
 
 app.use(express.static(path.join(__dirname,'/client/build')));
 
