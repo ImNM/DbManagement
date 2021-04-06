@@ -1,46 +1,15 @@
-import React , {useState} from 'react'
+import React , {useState,useEffect} from 'react'
 import {Checkbox , Collapse} from 'antd';
+import {tagNum} from '../../../utils/tagNum'
+import axios from 'axios';
 const {Panel} = Collapse
-
-
-
-
-const tags = [
-    {
-        "_id":1,
-        "name":"치매"
-    },
-    {
-        "_id":2,
-        "name":"당뇨병"
-    },
-    {
-        "_id":3,
-        "name":"건강"
-    },
-    {
-        "_id":4,
-        "name":"4"
-    },
-    {
-        "_id":5,
-        "name":"5"
-    },
-    {
-        "_id":6,
-        "name":"6"
-    },
-    {
-        "_id":7,
-        "name":"7"
-    }
-]
-
-
-
 function CheckTagBox(props) {
-    const [Checked, setChecked] = useState([])
+    const [Checked, setChecked] = useState(props.filter)
+
+
+
     const handleToggle = (value) =>{
+        console.log("value",value)
         const currentIndex = Checked.indexOf(value);
         const newChecked = [...Checked];
 
@@ -50,23 +19,25 @@ function CheckTagBox(props) {
         else{
             newChecked.splice(currentIndex,1)
         }
+        console.log("newchecked",newChecked)
         setChecked(newChecked);
         props.handleFilters(newChecked)
-
     }
+    
+    
 
     return (
         <div>
             <Collapse defaultActiveKey = {['0']}>
-                <Panel header key ='1'>
-                    {tags.map((value,index)=>(
+                <Panel  header="태그 검색하기" key ='1'>
+                    {tagNum.map((value,index)=>(
                         <React.Fragment key={index}>
                             <Checkbox
                                 onChange = {()=>handleToggle(value._id)}
                                 typee = "checkbox"
                                 checked = {Checked.indexOf(value._id)=== -1?false:true}
                             />
-                            <span>{value.name}</span>
+                            <span style={{paddingLeft:"5px",paddingRight:"5px"}}>{value.name}</span>
 
                         </React.Fragment>
                     ))}

@@ -6,10 +6,11 @@ import { List, Avatar, Space,Divider ,Button} from 'antd';
 import { MessageOutlined, LikeOutlined, StarOutlined ,EyeOutlined,TagOutlined } from '@ant-design/icons';
 import ReactHtmlParser from 'react-html-parser';
 import CheckBox from './CheckTagBox'
+import {tagNum} from '../../../utils/tagNum'
 const { Content } = Layout;
 
 
-
+var userTagList = [];
 var listData = [];
 const IconText = ({ icon, text }) => (
     <Space>
@@ -20,8 +21,9 @@ const IconText = ({ icon, text }) => (
 
 
 function BoardPage(props) {
-    const [pageCount, setPageCount] = useState(0);
+  const localUserInfo  = JSON.parse(localStorage.getItem("Auth"));
     const [pageData , setPageData] = useState([]);
+    const [savepageData , setsavePageData] = useState([]);
     const [Filters, setFilters] = useState([])
 
     useEffect(() => {
@@ -58,13 +60,28 @@ function BoardPage(props) {
                 });
             }
 
-            setPageData(
-                listData
-            )
-            listData =[];
+            setPageData(listData)
+            setsavePageData(listData)
+            console.log(listData)
+          
             
         }).then(()=>{
             console.log("after then");
+
+            axios.post('/api/users/Info',{localUserInfo}).then((res)=>{
+              if(res.data.success){
+                const userTag = res.data.UserInfo.tag;
+                console.log(userTag)
+              
+                for(var i=0;i<userTag.length;i++){
+                  userTagList.push(tagNum.find(tag=>tag.name===userTag[i])._id) 
+                } 
+                console.log("현재 필터 상태",Filters)
+                //setFilters(userTagList);
+                handleFilters(userTagList)
+                
+              }
+            })
         })
 
 
@@ -74,17 +91,40 @@ function BoardPage(props) {
     const onClickboardUpload = () =>{
         props.history.push("/boardUpload"); 
     } 
-
+    
     const handleFilters = (filters)=>{
+      console.log(filters)
         var newFilters ={...Filters}
         newFilters = filters;
-
-        showFilteredResults(newFilters);
         setFilters(newFilters);
-
+        showFilteredResults(newFilters);
+        console.log("현재 필터 상태",Filters)
     }
-    const showFilteredResults = ()=>{
 
+    const showFilteredResults = (newFilters)=>{
+        var newfirstBoardList = [];
+        var newLastBoardList = [];
+        if(newFilters.length === 0){
+          console.log("0")
+          return setPageData(listData)
+        }
+        console.log(pageData)
+        listData.map((board,index)=>{
+            var state = false;
+            for(var i=0;i<newFilters.length;i++){
+              const findtag = tagNum.find(tag=>tag.name===board.tag);
+
+              if(newFilters[i]===findtag["_id"]){
+                state =true;
+               return newfirstBoardList.push(board);
+              }
+            }
+            if(!state)
+            return newLastBoardList.push(board);
+        })
+           const newarray = newfirstBoardList.concat(newLastBoardList);
+          console.log(newarray)
+          setPageData(newarray);
 
     }
 
@@ -94,7 +134,8 @@ function BoardPage(props) {
             <Button onClick = {onClickboardUpload}>글 작성하기 </Button>
             <Divider>의학 정보 게시판</Divider>
             <CheckBox 
-              handleFilters = {filters => handleFilters(filters,'tags')}
+              handleFilters = {filters => handleFilters(filters)}
+              filter = {userTagList}
             />
             <List 
         itemLayout="vertical"
@@ -105,7 +146,7 @@ function BoardPage(props) {
                  },
                   pageSize: 5,
             }}
-            dataSource={listData}
+            dataSource={pageData}
             footer={
                   <div>
                         <b>매일이 의학정보 게시판</b> 

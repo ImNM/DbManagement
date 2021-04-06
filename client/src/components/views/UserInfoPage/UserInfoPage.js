@@ -3,11 +3,10 @@ import { Descriptions, Badge, Tooltip, Button ,Popconfirm} from 'antd';
 import { Avatar } from 'antd';
 import { UserOutlined ,EditOutlined} from '@ant-design/icons';
 import axios from 'axios';
-
+import {tagNum} from '../../../utils/tagNum'
 
 import { Tag } from 'antd';
 
-const tagsData = ['치매', '당뇨병', '건강', 'Movies','Books','투','쓰리','포'];
 
 const { CheckableTag } = Tag;
 
@@ -126,13 +125,13 @@ function UserInfoPage() {
                     {Edit &&
                     <div style={{padding:'5%'}}>
                                 <span style={{ marginRight: 8 }}>의학정보 태그:</span>
-                             {tagsData.map(tag => (
+                             {tagNum.map(tag => (
                                <CheckableTag
-                                key={tag}
-                               checked={selectedTags.indexOf(tag) > -1}
-                               onChange={checked => handleChange(tag, checked)}
+                                key={tag._id}
+                               checked={selectedTags.indexOf(tag.name) > -1}
+                               onChange={checked => handleChange(tag.name, checked)}
                                   >
-                               {tag}
+                               {tag.name}
                              </CheckableTag>
 
                              

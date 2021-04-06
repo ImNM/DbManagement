@@ -4,7 +4,7 @@ import { Layout,Input,Button} from 'antd';
 import axios from 'axios';
 import {withRouter} from'react-router-dom';
 import { useSelector } from 'react-redux';
-
+import {tagNum} from '../../../utils/tagNum'
 import { Tag } from 'antd';
 
 const { CheckableTag } = Tag;
@@ -76,13 +76,13 @@ function BoardUpload(props) {
             onChange = {onChangeEditHandler}
         />
         <p>태그를 선택해주세요</p>
-        {tagsData.map(tag => (
+        {tagNum.map(tag => (
                                <CheckableTag
-                                key={tag}
-                               checked={selectedTags.indexOf(tag) > -1}
-                               onChange={checked => handleChange(tag, checked)}
+                                key={tag._id}
+                               checked={selectedTags.indexOf(tag.name) > -1}
+                               onChange={checked => handleChange(tag.name, checked)}
                                   >
-                               {tag}
+                               {tag.name}
                              </CheckableTag>
         ))}
               
