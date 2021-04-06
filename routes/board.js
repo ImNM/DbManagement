@@ -14,7 +14,8 @@ router.post("/upload",(req,res) =>{
         writerId: boardInfo.writerId,
         title: boardInfo.title,
         content : boardInfo.content,
-        writerName : boardInfo.writerName
+        writerName : boardInfo.writerName,
+        tag : boardInfo.tag
     })
 
     board.save((err,doc)=>{

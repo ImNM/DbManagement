@@ -254,4 +254,26 @@ router.post('/info',auth,(req,res)=>{
 
 })
 
+
+router.post('/tags',auth,(req,res)=>{
+    console.log(req.body.localUserInfo)
+    console.log(req.body.selectedTags)
+    const localUserInfo = req.body.localUserInfo;
+    const selectedTags = req.body.selectedTags;
+
+    User.findById(localUserInfo.userId,(err,user)=>{
+        if(err) return res.status(400).json({success:false,err});
+
+        user.tag = selectedTags;
+        user.save((err)=>{
+            console.log(err)
+            if(err) return res.status(400).json({success:false,err});
+            return res.status(200).json({success:true,selectedTags:selectedTags})
+        })
+    })
+
+   // res.status(200).json({success:true,UserInfo:req.user})
+
+})
+
 module.exports = router;
