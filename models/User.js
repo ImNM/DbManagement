@@ -49,7 +49,6 @@ const userSchema = mongoose.Schema({
     },
     tag : {
         type : [],
-        default : ""
     }
 
 })
