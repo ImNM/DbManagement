@@ -47,6 +47,9 @@ function NavBar(props) {
         props.history.push("/"); 
         window.location.reload(false);
     } 
+    const onClickManageHandler=()=>{
+        props.history.push("/managePage")
+    }
     return (
         <Layout>
             <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
@@ -58,8 +61,9 @@ function NavBar(props) {
                     <div style={{display:'flex'}}>
                      
                    <Menu theme="dark" mode="horizontal">
-                          <Menu.Item key="1" onClick = {onClickboardHandler}>의학정보 게시판</Menu.Item>
-                          <Menu.Item key="2" onClick = {onClicklogoutHandler}>로그아웃</Menu.Item>
+                          <Menu.Item key="1" onClick = {onClickManageHandler}>내 기기관리</Menu.Item>
+                          <Menu.Item key="2" onClick = {onClickboardHandler}>의학정보 게시판</Menu.Item>
+                          <Menu.Item key="3" onClick = {onClicklogoutHandler}>로그아웃</Menu.Item>
                       
                   </Menu>
                   <a href='/userInfo'> {userInfo.name}님! 안녕하세요</a>

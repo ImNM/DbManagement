@@ -18,6 +18,7 @@ import boardPage from './components/views/boardPage/boardPage'
 import boardUpload from './components/views/boardPage/boardUpload'
 import boardInfoPage from './components/views/boardPage/boardInfoPage'
 import userInfo from './components/views/UserInfoPage/UserInfoPage'
+import ManagePage from './components/views/managePage/ManagePage'
 import Auth from './hoc/auth';
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
           <Route exact path="/boardUpload" component = {Auth(boardUpload,true)}/>
           <Route exact path="/boardInfo" component = {Auth(boardInfoPage,true)}/>
           <Route exact path="/userInfo" component = {Auth(userInfo,true)}/>
+          <Route exact path="/managePage" component = {Auth(ManagePage,true)}/>
         </Switch>
       </div>
       <Footer/>
