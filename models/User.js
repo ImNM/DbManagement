@@ -49,6 +49,10 @@ const userSchema = mongoose.Schema({
     },
     tag : {
         type : [],
+    },
+    isAdmin : {
+        type : Boolean,
+        default :false
     }
 
 })

@@ -19,6 +19,7 @@ import boardUpload from './components/views/boardPage/boardUpload'
 import boardInfoPage from './components/views/boardPage/boardInfoPage'
 import userInfo from './components/views/UserInfoPage/UserInfoPage'
 import ManagePage from './components/views/managePage/ManagePage'
+import AdminPage from './components/views/admin/AdminPage'
 import Auth from './hoc/auth';
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
           <Route exact path="/boardInfo" component = {Auth(boardInfoPage,true)}/>
           <Route exact path="/userInfo" component = {Auth(userInfo,true)}/>
           <Route exact path="/managePage" component = {Auth(ManagePage,true)}/>
+          <Route exact path="/admin" component = {Auth(AdminPage,true,true)}/>
         </Switch>
       </div>
       <Footer/>

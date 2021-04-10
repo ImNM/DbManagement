@@ -36,7 +36,7 @@ export  function  auth(){
     //get method 니깐 body 부분 필요없겟져?>
     const request = axios.post('/api/users/auth',{localUserInfo})
         .then(response => response.data);
-    //console.log(request);
+    console.log(request);
     
     return {
         type:"AUTH_USER",

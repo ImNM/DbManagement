@@ -18,6 +18,7 @@ export default function(SpecificComponent,option,adminRoute = null){
 
             dispatch(auth()).then(async res =>{
                 console.log("auth",res.payload.isAuth)
+                console.log("asdf",res.payload)
                 if(await !res.payload.isAuth){//로그인 하지 않은 상태
                     if(option){
                         props.history.push('/login');

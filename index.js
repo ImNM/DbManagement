@@ -27,6 +27,8 @@ app.use('/api/users',require('./routes/users'));
 app.use('/api/comment',require('./routes/comment'));
 app.use('/api/board',require('./routes/board'));
 app.use('/api/like',require('./routes/like'));
+app.use('/api/everyDay',require('./routes/everyDay'));
+app.use('/api/admin',require('./routes/admin'));
 
 app.use(express.static(path.join(__dirname,'/client/build')));
 

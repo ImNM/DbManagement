@@ -135,7 +135,8 @@ router.post('/auth',auth,(req,res)=>{
         _id: req.user._id,
         name : req.user.name,
         isAuth: true,
-        avatar: req.user.avatar
+        avatar: req.user.avatar,
+        isAdmin:req.user.isAdmin
     })
     
 })

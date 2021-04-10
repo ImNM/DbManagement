@@ -19,6 +19,8 @@ let auth = (req,res,next)=>{
         next(); // middleware 에서 callback function으로 넘겨줌.
     })
 
+    
+
     }
     
 

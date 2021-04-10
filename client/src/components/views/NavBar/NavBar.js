@@ -53,7 +53,7 @@ function NavBar(props) {
     return (
         <Layout>
             <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
-            <a style = {{display:'flex',float:'left'}} onClick={onClickHomeHandler}>똑똑한, 투약 도우미 매일이</a>
+            <img src={process.env.PUBLIC_URL+'/images/icon.png' } style = {{marginTop:"10px",maxWidth: "60%", height: "70%",display:'flex',float:'left'}} onClick={onClickHomeHandler}></img>
                 <div style={{ display:'flex', float:'right' }}>
 
                 <div>
@@ -64,15 +64,16 @@ function NavBar(props) {
                           <Menu.Item key="1" onClick = {onClickManageHandler}>내 기기관리</Menu.Item>
                           <Menu.Item key="2" onClick = {onClickboardHandler}>의학정보 게시판</Menu.Item>
                           <Menu.Item key="3" onClick = {onClicklogoutHandler}>로그아웃</Menu.Item>
+                          <Menu.Item key="4" onClick = {()=>{props.history.push("/userInfo")}}>{userInfo.name}님</Menu.Item>
                       
                   </Menu>
-                  <a href='/userInfo'> {userInfo.name}님! 안녕하세요</a>
+                 
                 </div>
                      : <div>
                      <Menu theme="dark" mode="horizontal">
-                     <Menu.Item key="1" onClick = {onClickloginHandler}>로그인</Menu.Item>
-                     <Menu.Item key="2" onClick = {onClickregisterHandler}>회원가입</Menu.Item>
-                     <Menu.Item key="3">about us</Menu.Item>
+                     <Menu.Item key="5" onClick = {onClickloginHandler}>로그인</Menu.Item>
+                     <Menu.Item key="6" onClick = {onClickregisterHandler}>회원가입</Menu.Item>
+                     <Menu.Item key="7">about us</Menu.Item>
                      </Menu>
                       </div>
                    }
