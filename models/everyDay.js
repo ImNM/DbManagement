@@ -21,11 +21,19 @@ const everyDay = mongoose.Schema({
     state :{
         type: Boolean ,
         default : false
+    },
+    dosageState :{
+        type: Boolean ,
+        default : false
+    },
+    toggle :{
+        type: Boolean ,
+        default : false
     }
 
 
 
-})
+},{timestamps : true})
 
 
 const EveryDay = mongoose.model('everyDay', everyDay);

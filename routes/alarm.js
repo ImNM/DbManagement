@@ -19,13 +19,20 @@ router.post('/getAlarm',(req,res)=>{
        if(err) return res.status(404).json({success:false});
        if(!alarms.length) return res.status(200).json({success:true});
        return res.status(200).json({success:true,alarms})
-      // console.log(alarms);
+      console.log(alarms);
    })
     
 })
 
 
-
-
+router.post('/delete',(req,res)=>{
+    const alarmId =  req.body.alarmId;
+    console.log("evr",alarmId);
+    
+    Alarm.deleteOne({ _id : alarmId},(err)=>{
+        if(err) return res.status(404).json({success:false});
+        return res.status(200).json({success:true})
+    })
+ })
 
 module.exports = router;

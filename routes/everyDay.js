@@ -55,16 +55,29 @@ router.post("/getAlarm",(req,res) =>{
 
 
 router.post("/geteveryDay",(req,res) =>{ // 기기 정보 가져옮  description 용도
-    console.log(req.body)
+   
     const userId = req.body.userId
+    console.log("asdf",userId)
     EveryDay.findOne({owner : userId},(err,everDay)=>{
         if(!everDay) return res.status(400).json({success:false, err})
-        return res.status(200).json({success:true,id: everDay._id})
+        return res.status(200).json({success:true,everDayInfo: everDay})
     })
 })
 
 router.post("/stateeveryDay",(req,res) =>{//기기 상태확인 polling 방식
-    
+   const everyDayId =  req.body.everDayId;
+   console.log(everyDayId)
+   EveryDay.findOne({_id : everyDayId},(err,everyDay)=>{
+    if(!everyDay) return res.status(400).json({success:false, err})
+    else {
+        everyDay.state = true;
+        everyDay.toggle =  !everyDay.toggle;
+        everyDay.save((err)=>{
+            if(err) return res.status(400).json({success:false,err});
+            return res.status(200).json({success:true});
+        })
+    }
+})
  
 })
 module.exports = router;

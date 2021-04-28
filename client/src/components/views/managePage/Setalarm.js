@@ -63,8 +63,9 @@ function Setalarm(props) {
 
       console.log(props.everyDayId)
      axios.post('/api/alarm/save',sendInfo).then(res =>{
-       if(res.success) 
+       if(res.data.success) 
        alert("저장 성공")
+       window.location.replace("/managePage")
      })
     }
 

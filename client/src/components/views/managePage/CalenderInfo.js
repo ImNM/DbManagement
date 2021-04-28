@@ -1,6 +1,6 @@
 import React ,{useState,useEffect} from 'react'
-import { Calendar, Badge } from 'antd';
-import { LeftOutlined, RightOutlined, BellOutlined } from '@ant-design/icons';
+import { Calendar, Badge,Tooltip ,Popconfirm ,message} from 'antd';
+import { LeftOutlined, RightOutlined,  DeleteFilled } from '@ant-design/icons';
 import '../../../CalenderInfo.scss'
 import moment, { Moment as MomentTypes } from 'moment';
 import axios from 'axios';
@@ -112,6 +112,19 @@ function CalenderInfo(props) {
         return calendar;
     }
 
+    const showPopconfirm = (event)=>{
+      console.log(event)
+      var r = window.confirm("해당 알람을 삭제하시겠습니까?");
+        if (r == true) {      
+          axios.post('/api/alarm/delete',{alarmId : event })
+            .then((res)=>{
+              if(res.data.success)
+                alert("알람 정보 지우기 성공")
+            })
+        }   else {
+              return ;
+      }
+    }
     return (
         <div>
           <div className="Calendar">
@@ -158,8 +171,15 @@ function CalenderInfo(props) {
                  <div><h3 >{todayInfo}</h3> </div>
                  <div>{todayAlarmInfo && 
                   todayAlarmInfo.map((Info,index)=>(
-                    
+                    <div style = {{display: "flex"}} >
                     <li > {Info.when} {Info.pillName}</li>
+                    <Tooltip title ="알람 삭제" >
+                    
+                    <DeleteFilled onClick={() => showPopconfirm(Info._id)} id = {Info._id}/>   
+                        
+                 
+                   </Tooltip>
+                  </div>
                   ))
                  }</div>
           

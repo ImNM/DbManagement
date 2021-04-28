@@ -49,7 +49,8 @@ const { Meta } = Card;
        axios.post('/api/everyDay/geteveryDay',{userId : localUserInfo.userId})  // 서버에서 id 에 등록된 매일이 아이디를 가져온다
        .then((res)=>{
            if(res.data.success){
-            seteveryDayId(res.data.id)
+               console.log("asdfasdf",res.data)
+            seteveryDayId(res.data.everDayInfo._id)
            }
        
        })
@@ -95,7 +96,7 @@ const { Meta } = Card;
             if(res.data.success){
                 setserialState ("success")
                 message.success("기기 등록 성공.")
-                
+                window.location.replace("/managePage")
             }
             else{
                 setserialState("error")

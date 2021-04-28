@@ -20,6 +20,7 @@ function UserInfoPage() {
 
     const [visible, setVisible] = React.useState(false);
     const [confirmLoading, setConfirmLoading] = React.useState(false);
+    const [everyDayInfo, seteveryDayInfo] = useState([])
   
     const showPopconfirm = () => {
       setVisible(true);
@@ -61,6 +62,13 @@ function UserInfoPage() {
                 alert("유저정보를 불러오는데 실패했습니다.");
             }
         })
+      axios.post('/api/everyDay/geteveryDay',{userId : localUserInfo.userId})
+      .then(res =>{
+        if(res.data.success){
+          console.log(res.data.everDayInfo);
+          seteveryDayInfo(res.data.everDayInfo)
+        }
+      })
 
     
     
@@ -98,7 +106,13 @@ function UserInfoPage() {
           </Descriptions.Item>
          
           
-    <Descriptions.Item label="연결된 기기" span={5}><Badge status="error" text="연결된 기기없음"/></Descriptions.Item>
+    <Descriptions.Item label="연결된 기기" span={5}>{everyDayInfo&& everyDayInfo.state  ? 
+    <Badge status="success" text={everyDayInfo.serialNum}/>
+    :
+    <Badge status="error" text={everyDayInfo.serialNum}/>
+     
+     }
+     </Descriptions.Item>
     <Descriptions.Item label={
         <div>
             의학정보 태그
