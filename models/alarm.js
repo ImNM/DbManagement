@@ -22,9 +22,6 @@ const alarm = mongoose.Schema({
     when : {
         type :String
     }
-
-
-
 })
 
 

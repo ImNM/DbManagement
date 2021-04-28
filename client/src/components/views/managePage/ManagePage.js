@@ -1,4 +1,4 @@
-import React ,{useState}from 'react'
+import React ,{useState,useEffect}from 'react'
 
 import { withRouter } from 'react-router-dom';
 
@@ -22,7 +22,7 @@ const { Meta } = Card;
     const [ShowCalender, setShowCalender] = useState(true)
     const [Edit, setEdit] = useState(false)
     const [EditEveryday, setEditEveryday] = useState(false)
-
+    const [everyDayId , seteveryDayId] = useState("")
     
 
     const onCalenderInfoHandler = ()=>{//기기 알람 정보
@@ -44,6 +44,16 @@ const { Meta } = Card;
         setShowCalender(false)
         setEdit(!Edit);
     }
+
+    useEffect(() => {
+       axios.post('/api/everyDay/geteveryDay',{userId : localUserInfo.userId})  // 서버에서 id 에 등록된 매일이 아이디를 가져온다
+       .then((res)=>{
+           if(res.data.success){
+            seteveryDayId(res.data.id)
+           }
+       
+       })
+    }, [])
 
     const [serialNum, setserialNum] = useState("")
     const [serialState, setserialState] = useState("")
@@ -134,12 +144,12 @@ const { Meta } = Card;
 
              {Edit && 
              <div style ={{flexGrow:"1"}}>
-                <Setalarm />
+                <Setalarm everyDayId={everyDayId} userId={localUserInfo.userId} />
              </div>
               } 
              {ShowCalender && 
                 <div style ={{flexGrow:"1"}}>
-                   <CalenderInfo />
+                   <CalenderInfo everyDayId={everyDayId}/>
                 </div>
              }
              {EditEveryday && 

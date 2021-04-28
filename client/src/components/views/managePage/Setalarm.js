@@ -1,16 +1,19 @@
 import React,{useState} from 'react'
-
-import { Steps, Button, message } from 'antd';
+import axios from 'axios';
+import { Steps, Button, message ,Input ,TimePicker } from 'antd';
 import DatePicker from './DatePicker'
+import moment from 'moment';
 const { Step } = Steps;
 
 
-function Setalarm() {
+function Setalarm(props) {
 
 
 
     const [current, setCurrent] = useState(0)
-
+    const [pillname, setpillname] = useState("")
+    const [pillTime,setpillTime] = useState("")
+    const [pillTerm, setpillTerm] = useState({})
 
       const next = () => {
         setCurrent(current + 1);
@@ -36,6 +39,42 @@ function Setalarm() {
         },
       ];
 
+     const onPillNameHandler = (e) =>{
+      setpillname(e.target.value);
+     }
+     const onPillTimeHandler = (time, timeString) => {
+      console.log(timeString);
+      setpillTime(timeString)
+    }
+    const onSaveHandler = ()=>{
+      console.log(pillname,pillTime,pillTerm)
+     console.log(moment(pillTerm.endDate).format("YYYY-MM-DD") )
+     console.log(moment(pillTerm.startDate).format("YYYY-MM-DD") )
+      if(pillname === "" || pillTime === "") return alert("모든정보를 올바르게 입력하세요")
+     const sendInfo = {
+       owner : props.userId,
+       serialNum : props.everyDayId,
+       pillName : pillname,
+       startDate : moment(pillTerm.startDate).format("YYYY-MM-DD"),
+       endDate : moment(pillTerm.endDate).format("YYYY-MM-DD") ,
+       when : pillTime
+     }
+
+
+      console.log(props.everyDayId)
+     axios.post('/api/alarm/save',sendInfo).then(res =>{
+       if(res.success) 
+       alert("저장 성공")
+     })
+    }
+
+    const onSelectDateHandler = (data) =>{
+      console.log(data)
+      setpillTerm(data)
+
+    }
+
+
     return (
         <div style={{transitionDuration :"3s"}}>
 
@@ -48,16 +87,17 @@ function Setalarm() {
                     {current === 0 &&
                     <div style ={{margin : "5%"}}>
                         <h1>약 이름을 설정해 주세요!</h1>
+                        <Input placeholder = "약이름을 입력해주세요" value = {pillname} onChange = {onPillNameHandler}/>
                     </div>   
                  }
                  {current === 1 &&
                     <div  style ={{margin : "5%"}}>
-                        asdfasdf
+                       <TimePicker defaultValue={moment('12:08', "HH:mm")} format="HH:mm" onChange = {onPillTimeHandler} />
                     </div>   
                  }
                  {current === 2 &&
                     <div  style ={{margin : "5%"}}>
-                       <DatePicker/>
+                       <DatePicker onSelectDateHandler = {onSelectDateHandler}/>
                     </div>   
                  }
                  
@@ -71,7 +111,7 @@ function Setalarm() {
                   </Button>
                  )}
                 {current === steps.length - 1 && (
-                      <Button type="primary" onClick={() => message.success('Processing complete!')}>
+                      <Button type="primary" onClick={onSaveHandler}>
                        저장하기
                      </Button>
                  )}

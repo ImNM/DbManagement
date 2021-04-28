@@ -53,13 +53,14 @@ router.post("/getAlarm",(req,res) =>{
  
 })
 
-router.post("/saveAlarm",(req,res) =>{//알람 정보 저장 약이름 , 투약 시간 , 투약 기간
- 
-})
-
 
 router.post("/geteveryDay",(req,res) =>{ // 기기 정보 가져옮  description 용도
- 
+    console.log(req.body)
+    const userId = req.body.userId
+    EveryDay.findOne({owner : userId},(err,everDay)=>{
+        if(!everDay) return res.status(400).json({success:false, err})
+        return res.status(200).json({success:true,id: everDay._id})
+    })
 })
 
 router.post("/stateeveryDay",(req,res) =>{//기기 상태확인 polling 방식

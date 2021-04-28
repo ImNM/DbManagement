@@ -29,6 +29,7 @@ app.use('/api/board',require('./routes/board'));
 app.use('/api/like',require('./routes/like'));
 app.use('/api/everyDay',require('./routes/everyDay'));
 app.use('/api/admin',require('./routes/admin'));
+app.use('/api/alarm',require('./routes/alarm'))
 
 app.use(express.static(path.join(__dirname,'/client/build')));
 
