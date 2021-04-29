@@ -252,7 +252,7 @@ router.post('/info',auth,(req,res)=>{
     console.log(req.body.localUserInfo)
 
     res.status(200).json({success:true,UserInfo:req.user})
-
+ 
 })
 
 
