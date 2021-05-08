@@ -177,13 +177,82 @@ router.post('/oauth/kakao/callback',function(req,res){
 
 router.post('/oauth/kakao/login',function(req,response){
     const accessToken = req.body.accessToken;
+    const snsId = req.body.snsId;
+
     var clientToken = "";
     console.log(accessToken)
-    if(!accessToken){
+    if(!accessToken || !snsId){
         return response.json({success:false});
     }
-    else{
+    else if(!accessToken){ //snsId를 이용한 로그인 방법
+        console.log("use snsId login", snsId)
+        let adminKey = "447f6987245c3ac17b4c6a062a745b68"
+        var getInfojson = {
+            "target_id_type" : "user_id",
+            "target_id" : snsId,
+            "property_keys":["properties.nickname","kakao_account.email","properties.thumbnail_image"]
+        }
 
+        fetch('https://kapi.kakao.com/v2/user/me', {
+        method: 'POST',
+        headers: { 'Authorization': 'KakaoAK '+adminKey},
+        body: JSON.stringify(getInfojson)
+        }).then(res => res.json())
+        .then(json => {
+            console.log(json)
+            const infoProperties = json.properties;
+            const infoKakao_account = json.kakao_account;
+            console.log(infoProperties,infoKakao_account);
+            if(infoProperties == null){
+                return response.status(400).json({success:false ,message : "올바르지 않은 snsId 입니다."});
+            }
+
+            User.findOne({snsId: json.id,provider:'kakao'},(err,user)=>{
+
+                if(!user){//유저가 없으면 가입!
+                    console.log("!user");
+                    adduser = new User({
+                        name:infoProperties.nickname, 
+                        snsId:json.id, 
+                        provider:'kakao' , 
+                        email:infoKakao_account.email,
+                        avatar:infoProperties.thumbnail_image_url
+                    });
+                  
+                    adduser.generateToken((err,user)=>{//user 정보에 token 까지 저장해줌.
+                        console.log("userinfo",user)
+                        if(err) return response.status(200).send(err);
+                       return response
+                        .status(200)
+                        .json({loginSucces:true, 
+                            userId: user._id ,
+                            token:user.token , 
+                            name:user.name,
+                            avator:user.avatar
+                        });  //json 객체 형태로 front단에 넘겨줄거야 쿠키 사용 x
+                    })
+                 }
+                 else{//유저가 있으면 jwt토큰 발행해줄꺼야!!
+                        
+                        user.generateToken((err,user)=>{//user 정보에 token 까지 저장해줌.
+                            console.log("userinfo",user)
+                            if(err) return response.status(400).send(err);
+                           return response
+                            .status(200)
+                            .json({loginSucces:true, 
+                                userId: user._id ,
+                                token:user.token , 
+                                name:user.name,
+                                avatar:user.avatar
+                            });
+                        })
+                 }
+            })
+        })
+
+    }
+    else if(!snsId){ // accessToken을 이용한 로그인 방법
+        console.log("use accessToken login", accessToken)
        fetch('https://kapi.kakao.com/v2/user/me', {
         method: 'POST',
         headers: { 'Authorization': 'Bearer '+accessToken}
