@@ -8,6 +8,7 @@ const config =require('.././config/key');
 const fetch = require('node-fetch');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
+const config =require('./config/key');
 
 
 
@@ -181,12 +182,12 @@ router.post('/oauth/kakao/login',function(req,response){
 
     var clientToken = "";
     console.log(accessToken)
-    if(!accessToken || !snsId){
+    if(!accessToken && !snsId){
         return response.json({success:false});
     }
     else if(!accessToken){ //snsId를 이용한 로그인 방법
         console.log("use snsId login", snsId)
-        let adminKey = "447f6987245c3ac17b4c6a062a745b68"
+        let adminKey = config.adminKey
         var getInfojson = {
             "target_id_type" : "user_id",
             "target_id" : snsId,
