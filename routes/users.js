@@ -184,6 +184,7 @@ router.post('/oauth/kakao/login',function(req,response){
         headers: { 'Authorization': 'Bearer '+accessToken}
         }).then(res => res.json())
         .then(json => {
+            console.log(json)
             clientid = json.id;
             const info = json.kakao_account;
             console.log(info);
