@@ -187,6 +187,10 @@ router.post('/oauth/kakao/login',function(req,response){
             clientid = json.id;
             const info = json.kakao_account;
             console.log(info);
+            if(info == null){
+                return response.status(400).json({success:false ,message : "올바르지 않은 accestoken 입니다."});
+            }
+
             User.findOne({snsId: json.id,provider:'kakao'},(err,user)=>{
 
                 if(!user){//유저가 없으면 가입!
