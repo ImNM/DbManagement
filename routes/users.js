@@ -167,6 +167,11 @@ router.get('/oauth/kakao/logout', function(req,res){
     })  
          
 });
+
+router.post('/oauth/kakao/callback',function(req,res){
+    console.log(req)
+})
+
 //--------------------------------------------------------------------------------------------------- client 와 통신해서 회원가입&로그인 과정진행후
 // jwt 토큰 반환
 
